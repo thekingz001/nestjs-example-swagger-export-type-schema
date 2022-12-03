@@ -1,50 +1,61 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
-import { testDataType } from "./test.export.schema";
+import { typeOfUserLottoLimit } from "./type/test.export.schema";
+import UserLottoBetLimitInterface from "../interface/user-lotto-bet-limit.interface";
+import UserLottoPayRateLevelInterface from "../interface/user-lotto-pay-rate-level.interface";
 
-export type LottoDocument = Lotto & Document;
-console.log(testDataType.typeOfDataBetLimits);
+export type UserLottoLimitDocument = UserLottoLimit & Document;
+
 @Schema({
-	collection: "lotto",
 	timestamps: true,
 	versionKey: false,
+	collection: "user-lotto-limit",
 })
-export class Lotto {
+export class UserLottoLimit {
 	@Prop({
 		type: String,
 		index: true,
-		require: true,
 	})
-	category: string;
+	username: string;
 
 	@Prop({
-		type: String,
-		index: true,
-		unique: true,
+		type: [typeOfUserLottoLimit.betLimits],
 	})
-	slug: string;
+	betLimits: UserLottoBetLimitInterface[];
 
 	@Prop({
-		type: String,
+		type: {
+			THREE_DIGITS: {
+				type: [typeOfUserLottoLimit.payRateLevelStakeThreshold],
+			},
+			THREE_DIGITS_TOD: {
+				type: [typeOfUserLottoLimit.payRateLevelStakeThreshold],
+			},
+			THREE_DIGITS_FIRST: {
+				type: [typeOfUserLottoLimit.payRateLevelStakeThreshold],
+			},
+			THREE_DIGITS_LAST: {
+				type: [typeOfUserLottoLimit.payRateLevelStakeThreshold],
+			},
+			TWO_DIGITS_TOP: {
+				type: [typeOfUserLottoLimit.payRateLevelStakeThreshold],
+			},
+			TWO_DIGITS_UNDER: {
+				type: [typeOfUserLottoLimit.payRateLevelStakeThreshold],
+			},
+			RUN_DIGITS_TOP: {
+				type: [typeOfUserLottoLimit.payRateLevelStakeThreshold],
+			},
+			RUN_DIGITS_UNDER: {
+				type: [typeOfUserLottoLimit.payRateLevelStakeThreshold],
+			},
+		},
 	})
-	name: string;
-
-	@Prop({
-		type: String,
-		enum: ["active", "disabled"],
-	})
-	status: string;
-
-	@Prop({
-		type: [testDataType.typeOfDataBetLimits],
-	})
-	betLimits: any[];
-
-	createdAt?: Date;
-	updatedAt?: Date;
+	payRateLevel: UserLottoPayRateLevelInterface;
 }
 
-export const LottoSchema = SchemaFactory.createForClass(Lotto);
-LottoSchema.index({
+export const UserLottoLimitSchema = SchemaFactory.createForClass(UserLottoLimit);
+UserLottoLimitSchema.index({
+	username: 1,
 	createdAt: -1,
 });

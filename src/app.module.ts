@@ -2,8 +2,8 @@ import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { MongooseModule } from "@nestjs/mongoose";
-import { Lotto, LottoSchema } from "./schema/lotto.schema";
 import { ConfigModule } from "@nestjs/config";
+import { UserLottoLimit, UserLottoLimitSchema } from "./schema/lotto.schema";
 
 @Module({
 	imports: [
@@ -14,8 +14,8 @@ import { ConfigModule } from "@nestjs/config";
 		MongooseModule.forRoot(`${process.env.MONGO_URL}`),
 		MongooseModule.forFeature([
 			{
-				name: Lotto.name,
-				schema: LottoSchema,
+				name: UserLottoLimit.name,
+				schema: UserLottoLimitSchema,
 			},
 		]),
 	],

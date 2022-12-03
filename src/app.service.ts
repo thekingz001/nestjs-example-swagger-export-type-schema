@@ -1,16 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Lotto, LottoDocument } from "./schema/lotto.schema";
 import { Model } from "mongoose";
+import { UserLottoLimit, UserLottoLimitDocument } from "./schema/lotto.schema";
 
 @Injectable()
 export class AppService {
-	@InjectModel(Lotto.name) private readonly lottoModel: Model<LottoDocument>;
-	public async postHello(greeting: string) {
-		const imageFile = "https://images.freeimages.com/images/large-previews/389/mitze-1380778.jpg";
-
-		return imageFile;
-		// return `${greeting}`;
+	@InjectModel(UserLottoLimit.name) private readonly lottoModel: Model<UserLottoLimitDocument>;
+	public async postHello(username: string, betLimits: Record<string, any>[], payRateLevel: any) {
+		return this.lottoModel.create({ username, betLimits, payRateLevel });
 	}
 
 	public async getHello(): Promise<any> {
